@@ -1,24 +1,17 @@
 import { Header } from "@/components/Header";
 import Link from "next/link";
+import { CheckoutButton } from "@/components/CheckoutButton";
 
-const demos: { title: string; description: string; status: "coming-soon" }[] =
-  [
-    {
-      title: "Stripe Checkout",
-      description: "One-time payment flow using Stripe Checkout.",
-      status: "coming-soon",
-    },
-    {
-      title: "Stripe Subscriptions",
-      description: "Recurring billing with plan selection.",
-      status: "coming-soon",
-    },
-    {
-      title: "Tempo MPP",
-      description: "Pay-per-use API access via Tempo MPP.",
-      status: "coming-soon",
-    },
-  ];
+const comingSoon = [
+  {
+    title: "Stripe Subscriptions",
+    description: "Recurring billing with plan selection.",
+  },
+  {
+    title: "Tempo MPP",
+    description: "Pay-per-use API access via Tempo MPP.",
+  },
+];
 
 export default function PaymentDemos() {
   return (
@@ -47,7 +40,32 @@ export default function PaymentDemos() {
           </p>
 
           <div className="flex flex-col gap-4">
-            {demos.map((demo) => (
+            {/* Stripe Checkout — live */}
+            <div className="rounded-lg border border-white/[0.08] px-6 py-5">
+              {/* Product row */}
+              <div className="flex items-center gap-5 mb-5 pb-5 border-b border-white/[0.06]">
+                {/* Gear icon */}
+                <div className="shrink-0 w-12 h-12 rounded border border-white/10 bg-white/[0.03] flex items-center justify-center">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+                    <circle cx="12" cy="12" r="3" />
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-white">Widget</p>
+                  <p className="text-xs text-gray-600 font-mono mt-0.5">SKU-0042</p>
+                </div>
+                <p className="ml-auto text-sm text-white">$1.00</p>
+              </div>
+              {/* Demo meta + button */}
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-gray-500">One-time payment · Stripe Checkout</p>
+                <CheckoutButton />
+              </div>
+            </div>
+
+            {/* Coming soon */}
+            {comingSoon.map((demo) => (
               <div
                 key={demo.title}
                 className="flex items-start justify-between rounded-lg border border-white/[0.08] px-6 py-5"

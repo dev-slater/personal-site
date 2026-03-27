@@ -1,15 +1,12 @@
 import { Header } from "@/components/Header";
 import Link from "next/link";
 import { CheckoutButton } from "@/components/CheckoutButton";
+import { MppDemo } from "@/components/MppDemo";
 
 const comingSoon = [
   {
     title: "Stripe Subscriptions",
     description: "Recurring billing with plan selection.",
-  },
-  {
-    title: "Tempo MPP",
-    description: "Pay-per-use API access via Tempo MPP.",
   },
 ];
 
@@ -55,7 +52,7 @@ export default function PaymentDemos() {
                   <p className="text-sm font-medium text-white">Widget</p>
                   <p className="text-xs text-gray-600 font-mono mt-0.5">SKU-0042</p>
                 </div>
-                <p className="ml-auto text-sm text-white">$1.00</p>
+                <p className="ml-auto text-sm text-white">1.00 usd</p>
               </div>
               {/* Demo meta + button */}
               <div className="flex items-center justify-between">
@@ -63,6 +60,9 @@ export default function PaymentDemos() {
                 <CheckoutButton />
               </div>
             </div>
+
+            {/* MPP — live */}
+            <MppDemo />
 
             {/* Coming soon */}
             {comingSoon.map((demo) => (

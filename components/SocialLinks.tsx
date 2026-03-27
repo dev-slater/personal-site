@@ -1,3 +1,5 @@
+import { EmailPicker } from "@/components/EmailPicker";
+
 type SocialLink = {
   label: string;
   href: string;
@@ -20,10 +22,6 @@ const links: SocialLink[] = [
     href: "https://t.me/slaterm100",
     external: true,
   },
-  {
-    label: "Email",
-    href: "mailto:matthew@tempo.xyz",
-  },
 ];
 
 export function SocialLinks({ className = "" }: { className?: string }) {
@@ -44,6 +42,7 @@ export function SocialLinks({ className = "" }: { className?: string }) {
           </span>
         </a>
       ))}
+      <EmailPicker className="group flex items-center gap-2 text-sm text-gray-400 transition-colors duration-200 hover:text-white" />
     </div>
   );
 }

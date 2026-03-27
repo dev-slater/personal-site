@@ -24,7 +24,9 @@ export default function Home() {
             </a>
             .
           </p>
-          <SocialLinks />
+          <div id="contact">
+            <SocialLinks />
+          </div>
         </div>
       </main>
 

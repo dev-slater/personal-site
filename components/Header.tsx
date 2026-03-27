@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { EmailPicker } from "@/components/EmailPicker";
 
 type HeaderProps = {
   showPaymentDemos?: boolean;
@@ -25,23 +24,12 @@ export function Header({ showPaymentDemos = true }: HeaderProps) {
               Payment Demos
             </Link>
           )}
-          <a
-            href="https://www.linkedin.com/in/matthew-slater/"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/#contact"
             className="text-xs text-gray-500 transition-colors duration-200 hover:text-white"
           >
-            LinkedIn
-          </a>
-          <a
-            href="https://x.com/slaterm100"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-gray-500 transition-colors duration-200 hover:text-white"
-          >
-            X
-          </a>
-          <EmailPicker className="text-xs text-gray-500 transition-colors duration-200 hover:text-white" />
+            Contact
+          </Link>
         </nav>
       </div>
     </header>

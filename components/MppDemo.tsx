@@ -4,9 +4,20 @@ import { useState } from "react";
 
 const UNIT_PRICE = 0.05;
 
+type Tab = "cli" | "agent" | "claude";
+
+const TAB_LABELS: Record<Tab, string> = {
+  cli: "npx mppx",
+  agent: "tempo wallet",
+  claude: "Claude prompt",
+};
+
 export function MppDemo() {
   const [quantity, setQuantity] = useState(1);
+  const [tab, setTab] = useState<Tab>("cli");
   const total = (quantity * UNIT_PRICE).toFixed(2);
+
+  const url = `https://matthewslater.xyz/api/mpp/widgets?quantity=${quantity}`;
 
   return (
     <div className="rounded-lg border border-white/[0.08] px-6 py-5">
@@ -47,12 +58,53 @@ export function MppDemo() {
         <span className="text-sm text-white">{total} usd</span>
       </div>
 
-      {/* CLI instructions */}
+      {/* Tabs */}
+      <div className="flex gap-1 mb-3">
+        {(Object.keys(TAB_LABELS) as Tab[]).map((t) => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className={`px-3 py-1 rounded text-[10px] uppercase tracking-widest transition-colors ${
+              tab === t
+                ? "bg-white/[0.08] text-white"
+                : "text-gray-600 hover:text-gray-400"
+            }`}
+          >
+            {TAB_LABELS[t]}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab content */}
       <div className="rounded border border-white/[0.06] bg-white/[0.02] px-4 py-3 mb-5">
-        <p className="text-[10px] uppercase tracking-widest text-gray-600 mb-2">Try it via CLI</p>
-        <code className="text-xs text-gray-300 break-all">
-          npx mppx https://matthewslater.xyz/api/mpp/widgets?quantity={quantity}
-        </code>
+        {tab === "cli" && (
+          <>
+            <p className="text-[10px] uppercase tracking-widest text-gray-600 mb-2">For developers · interactive CLI</p>
+            <code className="text-xs text-gray-300 break-all">
+              npx mppx {url}
+            </code>
+          </>
+        )}
+
+        {tab === "agent" && (
+          <>
+            <p className="text-[10px] uppercase tracking-widest text-gray-600 mb-2">For AI agents · Tempo wallet</p>
+            <div className="flex flex-col gap-1.5">
+              <code className="text-xs text-gray-500">tempo wallet -t login</code>
+              <code className="text-xs text-gray-300 break-all">tempo request {url}</code>
+            </div>
+          </>
+        )}
+
+        {tab === "claude" && (
+          <>
+            <p className="text-[10px] uppercase tracking-widest text-gray-600 mb-2">Paste into Claude Code</p>
+            <p className="text-xs text-gray-300 leading-relaxed">
+              Use <code className="text-gray-400">tempo request</code> to buy {quantity} widget token{quantity !== 1 ? "s" : ""} from{" "}
+              <code className="text-gray-400 break-all">{url}</code>
+            </p>
+          </>
+        )}
       </div>
 
       {/* Payment method + endpoint */}

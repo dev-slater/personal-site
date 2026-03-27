@@ -16,6 +16,11 @@ const links: SocialLink[] = [
     external: true,
   },
   {
+    label: "Telegram",
+    href: "https://t.me/slaterm100",
+    external: true,
+  },
+  {
     label: "Email",
     href: "mailto:matthew@tempo.xyz",
   },

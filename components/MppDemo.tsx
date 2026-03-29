@@ -31,7 +31,7 @@ export function MppDemo() {
         </div>
         <div>
           <p className="text-sm font-medium text-gray-900 dark:text-white">ms_dev Widget Token</p>
-          <p className="text-xs text-gray-400 dark:text-gray-600 font-mono mt-0.5">0.05 usd / token · Tempo USDC or Stripe card</p>
+          <p className="text-xs text-gray-400 dark:text-gray-600 font-mono mt-0.5">0.05 usd / token · Tempo stablecoin</p>
         </div>
       </div>
 

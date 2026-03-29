@@ -2,6 +2,8 @@ import { Header } from "@/components/Header";
 import Link from "next/link";
 import { CheckoutButton } from "@/components/CheckoutButton";
 import { MppDemo } from "@/components/MppDemo";
+import { StripeCryptoDemo } from "@/components/StripeCryptoDemo";
+import { StripeSptDemo } from "@/components/StripeSptDemo";
 
 const comingSoon = [
   {
@@ -63,6 +65,12 @@ export default function PaymentDemos() {
 
             {/* MPP — live */}
             <MppDemo />
+
+            {/* Stripe Machine Payments · Crypto — live */}
+            <StripeCryptoDemo />
+
+            {/* Stripe Machine Payments · Card (SPT) — pending profile activation */}
+            <StripeSptDemo />
 
             {/* Coming soon */}
             {comingSoon.map((demo) => (

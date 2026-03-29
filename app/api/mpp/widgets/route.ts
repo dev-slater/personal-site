@@ -12,7 +12,10 @@ const mppx = Mppx.create({
     }),
     stripe({
       secretKey: process.env.STRIPE_SECRET_KEY!,
-      networkId: "internal",
+      // networkId is included in the 402 challenge so mppx/client knows which
+      // Stripe Profile to target when creating an SPT. Use the actual profile_...
+      // ID in production; falls back to "internal" until profile is activated.
+      networkId: process.env.NEXT_PUBLIC_STRIPE_PROFILE_ID ?? "internal",
       paymentMethodTypes: ["card"],
       currency: "usd",
       decimals: 2,

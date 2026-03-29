@@ -103,8 +103,7 @@ export function StripeCryptoDemo() {
         <div className="shrink-0 w-12 h-12 rounded border border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/[0.03] flex items-center justify-center">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-gray-900 dark:text-white">
             <circle cx="12" cy="12" r="9" />
-            <path d="M12 3v18M3 12h18" />
-            <path d="M12 7c-2.5 0-4 1.5-4 3s1.5 2.5 4 2.5S16 13.5 16 12 14.5 7 12 7z" />
+            <path d="M12 7v10M14.5 9.5a2.5 2.5 0 0 0-5 0c0 1.5 1 2 2.5 2.5S15 13 15 14.5a2.5 2.5 0 0 1-5 0" />
           </svg>
         </div>
         <div>

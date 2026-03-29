@@ -23,6 +23,18 @@ interface CryptoDisplayDetails {
   };
 }
 
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const pi = searchParams.get("pi");
+    if (!pi) return NextResponse.json({ error: "Missing pi param" }, { status: 400 });
+    const paymentIntent = await stripe.paymentIntents.retrieve(pi);
+    return NextResponse.json({ status: paymentIntent.status, amount_received: paymentIntent.amount_received });
+  } catch (err) {
+    return stripeErrorResponse(err);
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}));

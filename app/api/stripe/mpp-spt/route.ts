@@ -22,16 +22,6 @@ const SPT_ENDPOINT = "/v1/test_helpers/shared_payment/granted_tokens";
 //   5. Server (mppx) creates PaymentIntent with shared_payment_granted_token: spt
 
 export async function POST(req: Request) {
-  if (!process.env.NEXT_PUBLIC_STRIPE_PROFILE_ID) {
-    return NextResponse.json(
-      {
-        error:
-          "Stripe Profile not yet activated. Create one at Dashboard → Developers → Machine Payments → Profiles.",
-      },
-      { status: 503 }
-    );
-  }
-
   try {
     // Accept params forwarded by mppx/client's createToken callback:
     //   { paymentMethod, amount, currency, networkId, expiresAt }

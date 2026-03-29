@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { stripe } from "@/lib/stripe";
 import { stripeErrorResponse } from "@/lib/stripe-error";
 
-// Shape of the next_action returned for a crypto deposit PaymentIntent.
+// Crypto PaymentIntents require the 2026-03-04.preview API version.
+// Per Stripe's official sample (stripe-samples/machine-payments), the only
+// supported approach is a separate client with @ts-expect-error at construction.
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error — preview version string not yet in SDK types
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2026-03-04.preview" });
+
+// Shape of next_action returned for a crypto deposit PaymentIntent.
 // Not yet in SDK types — confirmed from Stripe MPP docs.
 interface CryptoDisplayDetails {
   deposit_addresses: {
@@ -20,12 +26,8 @@ interface CryptoDisplayDetails {
 export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}));
-    // Default $0.10 demo amount; clamp to reasonable range
     const amount_cents = Math.max(1, Math.min(1000, Number(body.amount_cents ?? 10)));
 
-    // Create a crypto PaymentIntent using Stripe's machine payments API.
-    // Requires "Stablecoins and Crypto" to be enabled on the Stripe account.
-    // `mode` and `deposit_options` are not yet in SDK types — cast per Stripe docs.
     const paymentIntent = await stripe.paymentIntents.create(
       {
         amount: amount_cents,
@@ -40,15 +42,11 @@ export async function POST(req: Request) {
         },
         confirm: true,
       },
-      {
-        idempotencyKey: crypto.randomUUID(),
-        apiVersion: "2026-03-04.preview",
-      } as Stripe.RequestOptions
+      { idempotencyKey: crypto.randomUUID() }
     );
 
-    // Extract deposit address from next_action.crypto_display_details
     const nextAction = paymentIntent.next_action as
-      | ({ type: string; crypto_display_details?: CryptoDisplayDetails })
+      | { type: string; crypto_display_details?: CryptoDisplayDetails }
       | null;
     const depositDetails = nextAction?.crypto_display_details?.deposit_addresses?.tempo;
 

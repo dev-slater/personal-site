@@ -112,6 +112,14 @@ export function MppDemo() {
         <div className="flex flex-col gap-1">
           <p className="text-xs text-gray-500">HTTP 402 · MPP · Pay-per-request</p>
           <p className="text-[10px] text-gray-400 dark:text-gray-700 font-mono">GET /api/mpp/widgets?quantity={quantity}</p>
+          <a
+            href="https://explore.mainnet.tempo.xyz/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] text-gray-400 dark:text-gray-600 hover:text-gray-600 dark:hover:text-gray-400 transition-colors w-fit"
+          >
+            Tempo Explorer ↗
+          </a>
         </div>
         <a
           href={`/api/mpp/widgets?quantity=${quantity}`}

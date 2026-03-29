@@ -13,6 +13,7 @@ type State =
       network: string;
       amount_usd: string;
       payment_intent_id: string;
+      supported_tokens: Array<{ token_currency: string; token_contract_address: string }>;
     }
   | {
       status: "confirmed";
@@ -39,6 +40,7 @@ const ROLES = [
 export function StripeCryptoDemo() {
   const [quantity, setQuantity] = useState(1);
   const [state, setState] = useState<State>({ status: "idle" });
+  const [selectedToken, setSelectedToken] = useState(0);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const total = (quantity * UNIT_PRICE).toFixed(2);
@@ -60,12 +62,14 @@ export function StripeCryptoDemo() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Failed to generate deposit address");
 
+      setSelectedToken(0);
       setState({
         status: "awaiting_payment",
         deposit_address: data.deposit_address,
         network: data.network ?? "Tempo",
         amount_usd: data.amount_usd,
         payment_intent_id: data.payment_intent_id,
+        supported_tokens: data.supported_tokens ?? [],
       });
 
       pollRef.current = setInterval(async () => {
@@ -87,6 +91,7 @@ export function StripeCryptoDemo() {
 
   function reset() {
     if (pollRef.current) clearInterval(pollRef.current);
+    setSelectedToken(0);
     setState({ status: "idle" });
   }
 
@@ -190,11 +195,30 @@ export function StripeCryptoDemo() {
               <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-2">
                 3 · Buyer — send payment
               </p>
+              {state.supported_tokens.length > 1 && (
+                <div className="flex gap-1 mb-2">
+                  {state.supported_tokens.map((t, i) => (
+                    <button
+                      key={t.token_contract_address}
+                      onClick={() => setSelectedToken(i)}
+                      className={`px-2 py-0.5 rounded text-[10px] uppercase tracking-widest border transition-colors ${
+                        selectedToken === i
+                          ? "border-black/30 dark:border-white/30 text-gray-900 dark:text-white"
+                          : "border-black/[0.08] dark:border-white/[0.08] text-gray-400 dark:text-gray-600 hover:border-black/20 dark:hover:border-white/20"
+                      }`}
+                    >
+                      {t.token_currency}
+                    </button>
+                  ))}
+                </div>
+              )}
               <code className="text-xs text-gray-700 dark:text-gray-300 break-all">
-                tempo wallet send {state.deposit_address} {state.amount_usd}
+                tempo wallet transfer {state.amount_usd}{" "}
+                {state.supported_tokens[selectedToken]?.token_contract_address ?? "USDC"}{" "}
+                {state.deposit_address}
               </code>
               <p className="text-[10px] text-gray-300 dark:text-gray-700 mt-1.5">
-                Run this from any Tempo wallet to complete the payment.
+                Send {state.supported_tokens[selectedToken]?.token_currency ?? "USDC"} on Tempo to complete the payment.
               </p>
             </div>
 

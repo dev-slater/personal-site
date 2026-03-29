@@ -5,13 +5,6 @@ import { MppDemo } from "@/components/MppDemo";
 import { StripeCryptoDemo } from "@/components/StripeCryptoDemo";
 import { StripeSptDemo } from "@/components/StripeSptDemo";
 
-const comingSoon = [
-  {
-    title: "Stripe Subscriptions",
-    description: "Recurring billing with plan selection.",
-  },
-];
-
 export default function PaymentDemos() {
   return (
     <div className="flex flex-col min-h-screen font-[family-name:var(--font-geist-sans)]">
@@ -68,23 +61,6 @@ export default function PaymentDemos() {
             {/* Stripe Machine Payments · Card (SPT) — pending profile activation */}
             <StripeSptDemo />
 
-            {/* Coming soon */}
-            {comingSoon.map((demo) => (
-              <div
-                key={demo.title}
-                className="flex items-start justify-between rounded-lg border border-black/[0.08] dark:border-white/[0.08] px-6 py-5"
-              >
-                <div>
-                  <p className="mb-1 text-sm font-medium text-gray-900 dark:text-white">
-                    {demo.title}
-                  </p>
-                  <p className="text-xs text-gray-500">{demo.description}</p>
-                </div>
-                <span className="ml-8 mt-0.5 shrink-0 rounded-full border border-black/[0.08] dark:border-white/[0.08] px-3 py-1 text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600">
-                  Soon
-                </span>
-              </div>
-            ))}
           </div>
         </div>
       </main>

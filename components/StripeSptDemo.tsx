@@ -92,24 +92,24 @@ export function StripeSptDemo() {
         /* Active state — profile is configured */
         <>
           {state.status === "success" ? (
-            <div className="mb-5">
-              <div className="rounded border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02] px-4 py-3 mb-3">
-                <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-2">
-                  Demo token · valid 1 hour · test card
+            <div className="flex flex-col gap-2 mb-5">
+              <div className="rounded border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02] px-4 py-3">
+                <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-1">
+                  1 · Client — token generated · test card
                 </p>
                 <p className="text-xs text-gray-700 dark:text-gray-300 font-mono break-all">{state.token}</p>
               </div>
 
-              <div className="rounded border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02] px-4 py-3 mb-3">
-                <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-2">
-                  Try it with mppx/client
+              <div className="rounded border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02] px-4 py-3">
+                <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-1">
+                  2 · Use with mppx
                 </p>
                 <code className="text-xs text-gray-700 dark:text-gray-300 break-all">{state.example_cli}</code>
               </div>
 
               <div className="rounded border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02] px-4 py-3">
                 <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-1">
-                  Usage limits
+                  3 · Usage limits
                 </p>
                 <p className="text-xs text-gray-500 font-mono">
                   max {(state.usage_limits.max_amount / 100).toFixed(2)}{" "}
@@ -119,16 +119,35 @@ export function StripeSptDemo() {
               </div>
             </div>
           ) : (
-            <div className="rounded border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02] px-4 py-3 mb-5">
-              <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-1">How it works</p>
-              <p className="text-xs text-gray-500 leading-relaxed">
-                Generates a demo <span className="font-mono text-gray-600 dark:text-gray-400">spt_...</span> token
-                backed by a test Visa card — simulating what a client app would do with a real
-                card via Stripe Elements. Pass this token to any{" "}
-                <span className="font-mono text-gray-600 dark:text-gray-400">mppx/client</span> integration to
-                authorize machine payment requests without re-entering card details.
+            <>
+              <div className="grid grid-cols-3 gap-2 mb-3">
+                {[
+                  {
+                    label: "Client / Agent",
+                    description: "Holds a card. mppx/client exchanges it for a short-lived spt_... token before each paid request.",
+                  },
+                  {
+                    label: "Stripe",
+                    description: "Validates the token and charges the card when the merchant creates a PaymentIntent.",
+                  },
+                  {
+                    label: "Merchant",
+                    description: "Receives Authorization: Bearer spt_... on the request, creates a PaymentIntent server-side.",
+                  },
+                ].map(({ label, description }) => (
+                  <div
+                    key={label}
+                    className="rounded border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02] px-3 py-2.5"
+                  >
+                    <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-1.5">{label}</p>
+                    <p className="text-[11px] text-gray-500 leading-relaxed">{description}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-[10px] text-gray-300 dark:text-gray-700 mb-5">
+                In this demo, clicking Generate simulates what mppx/client does on the client side.
               </p>
-            </div>
+            </>
           )}
 
           <div className="flex items-center justify-between">

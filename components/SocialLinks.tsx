@@ -34,7 +34,7 @@ export function SocialLinks({ className = "" }: { className?: string }) {
           {...(link.external
             ? { target: "_blank", rel: "noopener noreferrer" }
             : {})}
-          className="group flex items-center gap-2 text-sm text-gray-400 transition-colors duration-200 hover:text-white"
+          className="group flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200 hover:text-gray-900 dark:hover:text-white"
         >
           {link.label}
           <span className="inline-block translate-x-0 transition-transform duration-200 group-hover:translate-x-1">
@@ -42,7 +42,7 @@ export function SocialLinks({ className = "" }: { className?: string }) {
           </span>
         </a>
       ))}
-      <EmailPicker className="group flex items-center gap-2 text-sm text-gray-400 transition-colors duration-200 hover:text-white" />
+      <EmailPicker className="group flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-200 hover:text-gray-900 dark:hover:text-white" />
     </div>
   );
 }

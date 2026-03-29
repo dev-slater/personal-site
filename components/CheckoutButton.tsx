@@ -29,11 +29,11 @@ export function CheckoutButton() {
       <button
         onClick={handleClick}
         disabled={loading}
-        className="ml-8 mt-0.5 shrink-0 rounded-full border border-white/20 px-3 py-1 text-[10px] uppercase tracking-widest text-white transition-colors duration-200 hover:border-white/40 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="ml-8 mt-0.5 shrink-0 rounded-full border border-black/20 dark:border-white/20 px-3 py-1 text-[10px] uppercase tracking-widest text-gray-900 dark:text-white transition-colors duration-200 hover:border-black/40 dark:hover:border-white/40 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {loading ? "..." : "Buy — $1"}
       </button>
-      {error && <p className="text-[10px] text-red-400">{error}</p>}
+      {error && <p className="text-[10px] text-red-500 dark:text-red-400">{error}</p>}
     </div>
   );
 }

@@ -1,13 +1,11 @@
 @import "tailwindcss";
 
+@variant dark (&:is(.dark *));
+
 @theme inline {
   --font-sans: var(--font-geist-sans);
 }
 
 * {
   box-sizing: border-box;
-}
-
-html {
-  background: #0a0a0a;
 }

@@ -30,13 +30,13 @@ export function EmailPicker({ className }: { className?: string }) {
         Email
       </button>
       {open && (
-        <div className="absolute left-0 top-full mt-2 flex flex-col rounded-md border border-white/[0.08] bg-[#0a0a0a] py-1 shadow-lg z-20">
+        <div className="absolute left-0 top-full mt-2 flex flex-col rounded-md border border-black/[0.08] dark:border-white/[0.08] bg-white dark:bg-[#0a0a0a] py-1 shadow-lg z-20">
           {emails.map(({ label, href }) => (
             <a
               key={label}
               href={href}
               onClick={() => setOpen(false)}
-              className="px-4 py-2 text-xs text-gray-400 hover:text-white whitespace-nowrap transition-colors duration-200"
+              className="px-4 py-2 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white whitespace-nowrap transition-colors duration-200"
             >
               {label}
             </a>

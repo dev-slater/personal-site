@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { stripe } from "@/lib/stripe";
 import { stripeErrorResponse } from "@/lib/stripe-error";
+
+// Crypto PaymentIntents require the preview API version for mode/deposit_options.
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2026-03-04.preview" as Stripe.LatestApiVersion,
+});
 
 // Shape of the next_action returned for a crypto deposit PaymentIntent.
 // Not yet in SDK types — confirmed from Stripe MPP docs.

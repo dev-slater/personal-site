@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+const UNIT_PRICE = 0.05;
+
 type State =
   | { status: "idle" }
   | { status: "loading" }
@@ -16,12 +18,19 @@ type State =
   | { status: "error"; message: string };
 
 export function StripeCryptoDemo() {
+  const [quantity, setQuantity] = useState(1);
   const [state, setState] = useState<State>({ status: "idle" });
+
+  const total = (quantity * UNIT_PRICE).toFixed(2);
 
   async function generate() {
     setState({ status: "loading" });
     try {
-      const res = await fetch("/api/stripe/mpp-crypto", { method: "POST" });
+      const res = await fetch("/api/stripe/mpp-crypto", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount_cents: quantity * 5 }),
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Failed to generate deposit address");
       setState({
@@ -39,10 +48,9 @@ export function StripeCryptoDemo() {
 
   return (
     <div className="rounded-lg border border-white/[0.08] px-6 py-5">
-      {/* Product row */}
       <div className="flex items-center gap-5 mb-5 pb-5 border-b border-white/[0.06]">
         <div className="shrink-0 w-12 h-12 rounded border border-white/10 bg-white/[0.03] flex items-center justify-center">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-white">
             <circle cx="12" cy="12" r="9" />
             <path d="M12 3v18M3 12h18" />
             <path d="M12 7c-2.5 0-4 1.5-4 3s1.5 2.5 4 2.5S16 13.5 16 12 14.5 7 12 7z" />
@@ -50,9 +58,31 @@ export function StripeCryptoDemo() {
         </div>
         <div>
           <p className="text-sm font-medium text-white">Stripe Machine Payments</p>
-          <p className="text-xs text-gray-600 font-mono mt-0.5">0.10 usd · crypto · Tempo network</p>
+          <p className="text-xs text-gray-600 font-mono mt-0.5">0.05 usd / token · crypto · Tempo network</p>
         </div>
-        <p className="ml-auto text-sm text-white">0.10 usd</p>
+      </div>
+
+      {/* Quantity + price */}
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-gray-500">Quantity</span>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+              className="w-6 h-6 rounded border border-white/10 text-gray-400 hover:text-white hover:border-white/30 transition-colors flex items-center justify-center text-xs"
+            >
+              −
+            </button>
+            <span className="text-sm text-white w-4 text-center">{quantity}</span>
+            <button
+              onClick={() => setQuantity((q) => Math.min(10, q + 1))}
+              className="w-6 h-6 rounded border border-white/10 text-gray-400 hover:text-white hover:border-white/30 transition-colors flex items-center justify-center text-xs"
+            >
+              +
+            </button>
+          </div>
+        </div>
+        <span className="text-sm text-white">{total} usd</span>
       </div>
 
       {state.status === "success" ? (
@@ -108,7 +138,6 @@ export function StripeCryptoDemo() {
         </div>
       )}
 
-      {/* Action row */}
       <div className="flex items-center justify-between">
         <p className="text-xs text-gray-500">Machine Payments · Crypto · Stripe-managed address</p>
         {state.status === "success" ? (

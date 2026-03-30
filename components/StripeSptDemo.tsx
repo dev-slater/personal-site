@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 const profileId = process.env.NEXT_PUBLIC_STRIPE_PROFILE_ID;
+const sptEnabled = false; // flip to true once Stripe SPT entitlement is approved
 
 type State =
   | { status: "idle" }
@@ -52,7 +53,7 @@ export function StripeSptDemo() {
       </div>
 
       {/* Pending activation state */}
-      {!profileId ? (
+      {!profileId || !sptEnabled ? (
         <>
           <div className="rounded border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02] px-4 py-3 mb-3">
             <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-2">The pattern</p>
@@ -84,7 +85,7 @@ export function StripeSptDemo() {
           <div className="flex items-center justify-between">
             <p className="text-xs text-gray-500">Machine Payments · Card · SPT</p>
             <span className="ml-8 shrink-0 rounded-full border border-black/[0.08] dark:border-white/[0.08] px-3 py-1 text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600">
-              Pending
+              Pending Stripe activation
             </span>
           </div>
         </>

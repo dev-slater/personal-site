@@ -4,7 +4,7 @@ import { SocialLinks } from "@/components/SocialLinks";
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen font-[family-name:var(--font-geist-sans)]">
-      <Header />
+      <Header showPaymentDemos={false} />
 
       <main className="flex flex-1 flex-col items-start justify-center px-8 py-32 mx-auto w-full max-w-5xl">
         <div className="max-w-2xl">

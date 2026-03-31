@@ -36,7 +36,7 @@ type State =
       usage_limits: { currency: string; max_amount: number; expires_at: number };
     }
   | { status: "paying" }
-  | { status: "paid"; quantity: number; total: string }
+  | { status: "paid"; quantity: number; total: string; receipt?: { method: string; status: string; timestamp: string; reference: string } }
   | { status: "error"; message: string };
 
 export function StripeSptDemo() {
@@ -151,8 +151,14 @@ export function StripeSptDemo() {
         throw new Error(err.detail ?? `Payment failed (${payRes.status})`);
       }
 
+      const receiptHeader = payRes.headers.get("payment-receipt");
+      let receipt: { method: string; status: string; timestamp: string; reference: string } | undefined;
+      if (receiptHeader) {
+        try { receipt = JSON.parse(atob(receiptHeader)); } catch { /* ignore */ }
+      }
+
       const data = await payRes.json();
-      setState({ status: "paid", quantity: data.quantity, total: data.total_charged });
+      setState({ status: "paid", quantity: data.quantity, total: data.total_charged, receipt });
     } catch (err) {
       setState({ status: "error", message: err instanceof Error ? err.message : "Payment failed" });
     }
@@ -327,13 +333,35 @@ export function StripeSptDemo() {
                   <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-1">Payment confirmed</p>
                   <p className="text-xs text-gray-700 dark:text-gray-300">{state.quantity}× widget · {state.total}</p>
                 </div>
-                <div className="rounded border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02] px-4 py-3">
-                  <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-1">What just happened</p>
-                  <p className="text-[11px] text-gray-500 leading-relaxed">
-                    Your card → <span className="font-mono text-gray-600 dark:text-gray-400">pm_...</span> → <span className="font-mono text-gray-600 dark:text-gray-400">spt_...</span> → 402 challenge → credential → PaymentIntent → card charged.
-                    In production, mppx/client runs this entire flow invisibly.
-                  </p>
-                </div>
+                {state.receipt && (
+                  <div className="rounded border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02] px-4 py-3">
+                    <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-2">Payment receipt</p>
+                    <div className="flex flex-col gap-1 text-xs font-mono">
+                      <div className="flex gap-3">
+                        <span className="text-gray-400 dark:text-gray-600 w-20 shrink-0">method</span>
+                        <span className="text-gray-600 dark:text-gray-400">stripe / card</span>
+                      </div>
+                      <div className="flex gap-3">
+                        <span className="text-gray-400 dark:text-gray-600 w-20 shrink-0">reference</span>
+                        <a
+                          href={`https://dashboard.stripe.com/payments/${state.receipt.reference}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-700 dark:text-gray-300 hover:underline truncate"
+                        >
+                          {state.receipt.reference.slice(0, 24)}… ↗
+                        </a>
+                      </div>
+                      <div className="flex gap-3">
+                        <span className="text-gray-400 dark:text-gray-600 w-20 shrink-0">timestamp</span>
+                        <span className="text-gray-500">{state.receipt.timestamp}</span>
+                      </div>
+                    </div>
+                    <p className="text-[10px] text-gray-300 dark:text-gray-700 mt-2.5">
+                      Stripe also fired a <span className="font-mono">payment_intent.succeeded</span> webhook in the background.
+                    </p>
+                  </div>
+                )}
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-xs text-gray-500 flex items-center gap-2">

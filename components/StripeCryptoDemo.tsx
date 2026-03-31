@@ -57,7 +57,7 @@ export function StripeCryptoDemo() {
       const res = await fetch("/api/stripe/mpp-crypto", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount_cents: quantity * 5 }),
+        body: JSON.stringify({ amount_cents: Math.round(quantity * UNIT_PRICE * 100) }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Failed to generate deposit address");
@@ -230,7 +230,7 @@ export function StripeCryptoDemo() {
             </p>
             <button
               onClick={reset}
-              className="ml-8 shrink-0 rounded-full border border-black/[0.08] dark:border-white/[0.08] px-3 py-1 text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 transition-colors duration-200 hover:border-black/20 dark:hover:border-white/20 hover:text-gray-700 dark:hover:text-gray-300"
+              className="shrink-0 rounded-full border border-black/[0.08] dark:border-white/[0.08] px-3 py-1 text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 transition-colors duration-200 hover:border-black/20 dark:hover:border-white/20 hover:text-gray-700 dark:hover:text-gray-300"
             >
               Reset
             </button>
@@ -243,15 +243,32 @@ export function StripeCryptoDemo() {
           <div className="flex flex-col gap-2 mb-5">
             <div className="rounded border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02] px-4 py-3">
               <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-1">
-                Payment confirmed
-              </p>
-              <p className="text-xs text-gray-500 font-mono">{state.payment_intent_id}</p>
-            </div>
-            <div className="rounded border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02] px-4 py-3">
-              <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-1">
                 Stripe settled
               </p>
               <p className="text-xs text-gray-700 dark:text-gray-300">{state.amount_usd} usd · buyer paid USDC · merchant receives USD</p>
+            </div>
+            <div className="rounded border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02] px-4 py-3">
+              <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-2">Payment receipt</p>
+              <div className="flex flex-col gap-1 text-xs font-mono">
+                <div className="flex gap-3">
+                  <span className="text-gray-400 dark:text-gray-600 w-20 shrink-0">method</span>
+                  <span className="text-gray-600 dark:text-gray-400">stripe / crypto</span>
+                </div>
+                <div className="flex gap-3">
+                  <span className="text-gray-400 dark:text-gray-600 w-20 shrink-0">reference</span>
+                  <a
+                    href={`https://dashboard.stripe.com/payments/${state.payment_intent_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-700 dark:text-gray-300 hover:underline truncate"
+                  >
+                    {state.payment_intent_id.slice(0, 24)}… ↗
+                  </a>
+                </div>
+              </div>
+              <p className="text-[10px] text-gray-300 dark:text-gray-700 mt-2.5">
+                Stripe also fired a <span className="font-mono">payment_intent.succeeded</span> webhook in the background.
+              </p>
             </div>
           </div>
 

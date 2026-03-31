@@ -6,15 +6,17 @@ const UNIT_PRICE = 0.05;
 
 type Tab = "cli" | "agent" | "claude";
 
+const TAB_ORDER: Tab[] = ["agent", "claude", "cli"];
+
 const TAB_LABELS: Record<Tab, string> = {
-  cli: "npx mppx",
   agent: "tempo wallet",
   claude: "Claude prompt",
+  cli: "npx mppx",
 };
 
 export function MppDemo() {
   const [quantity, setQuantity] = useState(1);
-  const [tab, setTab] = useState<Tab>("cli");
+  const [tab, setTab] = useState<Tab>("agent");
   const total = (quantity * UNIT_PRICE).toFixed(2);
 
   const url = `https://matthewslater.xyz/api/mpp/widgets?quantity=${quantity}`;
@@ -30,7 +32,7 @@ export function MppDemo() {
           </svg>
         </div>
         <div>
-          <p className="text-sm font-medium text-gray-900 dark:text-white">ms_dev Widget Token</p>
+          <p className="text-sm font-medium text-gray-900 dark:text-white">Machine Payments with Tempo Wallet Crypto</p>
           <p className="text-xs text-gray-400 dark:text-gray-600 font-mono mt-0.5">0.05 usd / token · Tempo stablecoin</p>
         </div>
       </div>
@@ -60,7 +62,7 @@ export function MppDemo() {
 
       {/* Tabs */}
       <div className="flex gap-1 mb-3">
-        {(Object.keys(TAB_LABELS) as Tab[]).map((t) => (
+        {TAB_ORDER.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -78,32 +80,56 @@ export function MppDemo() {
       {/* Tab content */}
       <div className="rounded border border-black/[0.06] dark:border-white/[0.06] bg-black/[0.02] dark:bg-white/[0.02] px-4 py-3 mb-5">
         {tab === "cli" && (
-          <>
-            <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-2">For developers · interactive CLI</p>
-            <code className="text-xs text-gray-700 dark:text-gray-300 break-all">
-              npx mppx {url}
-            </code>
-          </>
+          <div className="flex flex-col gap-3">
+            <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600">For developers · mppx CLI</p>
+            <div className="flex flex-col gap-1.5">
+              <p className="text-[10px] text-gray-400 dark:text-gray-600">1. Install</p>
+              <code className="text-xs text-gray-500 dark:text-gray-400">npm install -g mppx</code>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <p className="text-[10px] text-gray-400 dark:text-gray-600">2. Create account</p>
+              <code className="text-xs text-gray-500 dark:text-gray-400">mppx account create</code>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <p className="text-[10px] text-gray-400 dark:text-gray-600">3. Make paid request</p>
+              <code className="text-xs text-gray-700 dark:text-gray-300 break-all">mppx {url}</code>
+            </div>
+          </div>
         )}
 
         {tab === "agent" && (
-          <>
-            <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-2">For AI agents · Tempo wallet</p>
+          <div className="flex flex-col gap-3">
+            <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600">For AI agents · Tempo Wallet</p>
             <div className="flex flex-col gap-1.5">
-              <code className="text-xs text-gray-400 dark:text-gray-500">tempo wallet -t login</code>
+              <p className="text-[10px] text-gray-400 dark:text-gray-600">1. Install</p>
+              <code className="text-xs text-gray-500 dark:text-gray-400">curl -fsSL https://tempo.xyz/install | bash</code>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <p className="text-[10px] text-gray-400 dark:text-gray-600">2. Connect wallet</p>
+              <code className="text-xs text-gray-500 dark:text-gray-400">tempo wallet login</code>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <p className="text-[10px] text-gray-400 dark:text-gray-600">3. Make paid request</p>
               <code className="text-xs text-gray-700 dark:text-gray-300 break-all">tempo request {url}</code>
             </div>
-          </>
+          </div>
         )}
 
         {tab === "claude" && (
-          <>
-            <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-2">Paste into Claude Code</p>
-            <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">
-              Use <code className="text-gray-500 dark:text-gray-400">tempo request</code> to buy {quantity} widget token{quantity !== 1 ? "s" : ""} from{" "}
-              <code className="text-gray-500 dark:text-gray-400 break-all">{url}</code>
-            </p>
-          </>
+          <div className="flex flex-col gap-3">
+            <p className="text-[10px] uppercase tracking-widest text-gray-400 dark:text-gray-600">Paste into Claude Code</p>
+            <div className="flex flex-col gap-1.5">
+              <p className="text-[10px] text-gray-400 dark:text-gray-600">1. Set up Tempo</p>
+              <code className="text-xs text-gray-500 dark:text-gray-400">Read https://tempo.xyz/SKILL.md and set up tempo</code>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <p className="text-[10px] text-gray-400 dark:text-gray-600">2. Make paid request</p>
+              <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">
+                Use <code className="text-gray-500 dark:text-gray-400">tempo request</code> to buy {quantity} widget token{quantity !== 1 ? "s" : ""} from{" "}
+                <code className="text-gray-500 dark:text-gray-400 break-all">{url}</code>
+              </p>
+            </div>
+          </div>
         )}
       </div>
 

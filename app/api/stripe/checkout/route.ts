@@ -13,7 +13,7 @@ export async function POST(_req: NextRequest) {
           quantity: 1,
           price_data: {
             currency: "usd",
-            unit_amount: 100,
+            unit_amount: 50,
             product_data: { name: "Widget", description: "SKU-0042" },
           },
         },

@@ -41,10 +41,10 @@ export default function PaymentDemos() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">Widget</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">Stripe Checkout Classic</p>
                   <p className="text-xs text-gray-400 dark:text-gray-600 font-mono mt-0.5">SKU-0042</p>
                 </div>
-                <p className="ml-auto text-sm text-gray-900 dark:text-white">1.00 usd</p>
+                <p className="ml-auto text-sm text-gray-900 dark:text-white">0.50 usd</p>
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-xs text-gray-500">One-time payment · Stripe Checkout</p>

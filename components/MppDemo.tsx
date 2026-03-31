@@ -92,7 +92,7 @@ export function MppDemo() {
             </div>
             <div className="flex flex-col gap-1.5">
               <p className="text-[10px] text-gray-400 dark:text-gray-600">3. Make paid request</p>
-              <code className="text-xs text-gray-700 dark:text-gray-300 break-all">mppx {url}</code>
+              <code className="text-xs text-gray-700 dark:text-gray-300 break-all">mppx &quot;{url}&quot;</code>
             </div>
           </div>
         )}
@@ -110,7 +110,11 @@ export function MppDemo() {
             </div>
             <div className="flex flex-col gap-1.5">
               <p className="text-[10px] text-gray-400 dark:text-gray-600">3. Make paid request</p>
-              <code className="text-xs text-gray-700 dark:text-gray-300 break-all">tempo request {url}</code>
+              <code className="text-xs text-gray-700 dark:text-gray-300 break-all">tempo request &quot;{url}&quot;</code>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <p className="text-[10px] text-gray-400 dark:text-gray-600">with receipt</p>
+              <code className="text-xs text-gray-700 dark:text-gray-300 break-all">tempo request -D - &quot;{url}&quot;</code>
             </div>
           </div>
         )}

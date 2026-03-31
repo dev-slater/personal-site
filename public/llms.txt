@@ -1,0 +1,54 @@
+# matthewslater.xyz — Payment Demos
+
+This site hosts a payment demos page showcasing HTTP 402 machine payments.
+It is NOT a general-purpose API. The only paid endpoint is the widget endpoint below.
+
+## Paid Endpoint: Widget Tokens
+
+GET https://matthewslater.xyz/api/mpp/widgets
+
+Purchase ms_dev widget tokens. Returns a JSON array of widget objects.
+
+### Parameters
+
+- quantity (integer, optional): Number of widget tokens to purchase. Default: 1. Min: 1. Max: 10.
+
+### Pricing
+
+- 0.05 usd per widget
+- Formula: quantity * 0.05 usd
+- Example: quantity=3 costs 0.15 usd
+
+### Payment Methods
+
+1. Tempo USDC (recommended for agents)
+   - Network: Tempo mainnet
+   - Token: USDC (0x20C000000000000000000000b9537d11c60E8b50)
+   - Use: tempo request "https://matthewslater.xyz/api/mpp/widgets?quantity=1"
+
+2. Stripe card (Shared Payment Token / SPT)
+   - Requires Stripe machine payments access
+
+3. Stripe crypto deposit
+   - Stripe-managed deposit address; on-chain settlement via Tempo
+   - See /api/stripe/mpp-crypto
+
+### Usage
+
+Before spending, check the schema endpoint:
+  GET https://matthewslater.xyz/api/mpp/widgets/docs
+
+Or the machine-readable service manifest:
+  GET https://matthewslater.xyz/.well-known/mpp.json
+
+### Example (Tempo wallet CLI)
+
+  tempo request "https://matthewslater.xyz/api/mpp/widgets?quantity=1"
+
+### Example Response (200 OK)
+
+  {
+    "widgets": [{ "id": "ms_dev_1234_0", "sku": "ms_dev", "name": "Widget" }],
+    "quantity": 1,
+    "total_charged": "0.05 usd"
+  }

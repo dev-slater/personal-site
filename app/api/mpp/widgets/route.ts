@@ -39,7 +39,11 @@ export async function GET(req: Request) {
     ["tempo/charge", { amount, currency: "0x20C000000000000000000000b9537d11c60E8b50", description }],
   )(req);
 
-  if (result.status === 402) return result.challenge;
+  if (result.status === 402) {
+    const challenge = result.challenge as Response;
+    challenge.headers.set("Link", '</api/mpp/widgets/docs>; rel="describedby"');
+    return challenge;
+  }
 
   const widgets = Array.from({ length: quantity }, (_, i) => ({
     id: `ms_dev_${Date.now()}_${i}`,

@@ -1,5 +1,7 @@
 import { Mppx, stripe, tempo } from "mppx/server";
 
+export const dynamic = "force-dynamic";
+
 // MPP_SECRET_KEY is auto-detected from env.
 // Two payment methods: Tempo USDC (mainnet) and Stripe card (requires machine payments access).
 // TODO: Add tempo.session() for pay-as-you-go channel payments (coming soon).

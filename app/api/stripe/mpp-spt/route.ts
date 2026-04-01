@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
+
+export const dynamic = "force-dynamic";
 import { stripeErrorResponse } from "@/lib/stripe-error";
 
 // Test: /v1/test_helpers/shared_payment/granted_tokens

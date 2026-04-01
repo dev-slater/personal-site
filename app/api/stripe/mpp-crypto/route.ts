@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { stripeErrorResponse } from "@/lib/stripe-error";
 
+export const dynamic = "force-dynamic";
+
 // Crypto PaymentIntents require the 2026-03-04.preview API version.
 // Per Stripe's official sample (stripe-samples/machine-payments), the only
 // supported approach is a separate client with @ts-expect-error at construction.
